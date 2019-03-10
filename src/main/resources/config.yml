@@ -1,0 +1,20 @@
+weapons:
+  'Калаш':
+    ammo: 30
+    name: 'Калаш'
+    damage: 10.0
+    accuracy: 0.2
+    recoil: 2
+    texture: 0.006402048655569782
+    run: 0.007042253521126761
+    aim: 0.0076824583866837385
+
+  'm4a1':
+    ammo: 30
+    name: 'M4A1'
+    damage: 10.0
+    accuracy: 0.2
+    recoil: 2
+    texture: 0.012163892445582587
+    run: 0.012804097311139564
+    aim: 0.013444302176696543
