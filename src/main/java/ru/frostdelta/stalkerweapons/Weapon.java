@@ -1,14 +1,19 @@
 package ru.frostdelta.stalkerweapons;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.SmallFireball;
+import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Weapon {
 
@@ -54,6 +59,24 @@ public class Weapon {
 
     public void shot() {
         ammo--;
+
+        SmallFireball fireball = player.launchProjectile(SmallFireball.class);
+        double d = new Random().nextDouble();
+        Vector vector = player.getEyeLocation().getDirection();
+        //TODO сделать рандом, каккую величину менять (X, Y или Z)
+        int num = new Random().nextInt(2);
+        switch (num){
+            case 0: vector.setX(vector.getX() * accuracy);
+                    break;
+            case 1: vector.setX(vector.getY() * accuracy);
+                    break;
+            case 2: vector.setX(vector.getZ() * accuracy);
+        }
+
+        if(d < accuracy) {
+            fireball.setDirection(player.getEyeLocation().getDirection());
+        }else fireball.setDirection(vector);
+        Bukkit.broadcastMessage("launch");
         //TODO поменять лор
     }
 

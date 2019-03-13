@@ -13,7 +13,6 @@ public final class StalkerWeapons extends JavaPlugin {
        getLogger().info("Developed by: " + getDescription().getAuthors());
        plugin = this;
        getServer().getPluginManager().registerEvents(new FireEventListener(), this);
-
        //TODO подгрузка оружия
     }
 
