@@ -5,9 +5,7 @@ import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.SmallFireball;
-import org.bukkit.entity.Snowball;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -60,7 +58,9 @@ public class Weapon {
     public void shot() {
         ammo--;
 
-        SmallFireball fireball = player.launchProjectile(SmallFireball.class);
+        Fireball bullet = player.launchProjectile(Fireball.class);
+        bullet.setIsIncendiary(false);
+        bullet.setYield(0);
         double d = new Random().nextDouble();
         Vector vector = player.getEyeLocation().getDirection();
         //TODO сделать рандом, каккую величину менять (X, Y или Z)
@@ -74,8 +74,8 @@ public class Weapon {
         }
 
         if(d < accuracy) {
-            fireball.setDirection(player.getEyeLocation().getDirection());
-        }else fireball.setDirection(vector);
+            bullet.setVelocity(player.getEyeLocation().getDirection());
+        }else bullet.setVelocity(vector);
         Bukkit.broadcastMessage("launch");
         //TODO поменять лор
     }

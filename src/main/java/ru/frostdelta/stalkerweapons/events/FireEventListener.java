@@ -52,7 +52,10 @@ public class FireEventListener implements Listener {
 
     private void shot(Player player) {
         double accuracy = 0.2;
-        Fireball bullet = player.launchProjectile(Fireball.class);
+
+        Arrow bullet = player.launchProjectile(Arrow.class);
+        bullet.setGravity(false);
+
         double d = new Random().nextDouble();
         Vector vector = player.getLocation().getDirection();
         //TODO сделать рандом, каккую величину менять (X, Y или Z)
@@ -61,9 +64,8 @@ public class FireEventListener implements Listener {
         //TODO ПОЛНЫЙ ПИЗДЕЦ НАХУЙ БЛЯТЬ, ТУТ ПЕРЕДЕЛАТЬ К ХУЯМ НИХУЯ НЕ РАБОТАЕТ ЕБАНЫЙ В РОТ
         //КОСТЫЛЬ ЕБУЧИЙ, ПЕРЕДЕЛАТЬ
         if(d < accuracy) {
-
-            bullet.setDirection(player.getLocation().getDirection());
-        }else bullet.setDirection(change(vector, num, new Random().nextInt(2)));
+            bullet.getLocation().setDirection(player.getLocation().getDirection());
+        }else bullet.getLocation().setDirection(change(vector, num, new Random().nextInt(2)));
 
     }
 
