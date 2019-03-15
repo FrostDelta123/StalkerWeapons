@@ -3,6 +3,7 @@ package ru.frostdelta.stalkerweapons.events;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
+import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
@@ -17,63 +18,26 @@ import java.util.Random;
 public class FireEventListener implements Listener {
 
 
-
-    private Vector change(Vector vector, int num, int second){
-
-        //TODO работает, настроить точность
-        double accuracy = 0.2;
-
-        if(second == 0) {
-            switch (num) {
-                case 0:
-                    vector.setX(vector.getX() + accuracy);
-                    break;
-                case 1:
-                    vector.setY(vector.getY() + accuracy);
-                    break;
-                case 2:
-                    vector.setZ(vector.getZ() + accuracy);
-            }
-        }else {
-            switch (num) {
-                case 0:
-                    vector.setX(vector.getX() - accuracy);
-                    break;
-                case 1:
-                    vector.setY(vector.getY() - accuracy);
-                    break;
-                case 2:
-                    vector.setZ(vector.getZ() - accuracy);
-            }
-        }
-        return vector;
-    }
-
-
     private void shot(Player player) {
-        double accuracy = 0.2;
+        double accuracy = 0.0;
 
         Arrow bullet = player.launchProjectile(Arrow.class);
         bullet.setGravity(false);
 
-        double d = new Random().nextDouble();
-        Vector vector = player.getLocation().getDirection();
-        //TODO сделать рандом, каккую величину менять (X, Y или Z)
-        int num = new Random().nextInt(3);
 
-        //TODO ПОЛНЫЙ ПИЗДЕЦ НАХУЙ БЛЯТЬ, ТУТ ПЕРЕДЕЛАТЬ К ХУЯМ НИХУЯ НЕ РАБОТАЕТ ЕБАНЫЙ В РОТ
-        //КОСТЫЛЬ ЕБУЧИЙ, ПЕРЕДЕЛАТЬ
-        if(d < accuracy) {
-            bullet.getLocation().setDirection(player.getLocation().getDirection());
-        }else bullet.getLocation().setDirection(change(vector, num, new Random().nextInt(2)));
 
     }
 
     @EventHandler
-    public void fire11(PlayerInteractEvent event){
-        if(event.getAction().equals(Action.LEFT_CLICK_AIR)) {
+    public void interact(PlayerInteractEvent event){
+        Player player = event.getPlayer();
+        if(player.getItemInHand() != null && player.getItemInHand().getData().getItemType().equals(Material.AIR)){
+            return;
+        }
+        if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            Bukkit.broadcastMessage(String.valueOf(player.getItemInHand().getDurability()));
             shot(event.getPlayer());
-            event.getPlayer().playEffect(event.getPlayer().getLocation(), Effect.BLAZE_SHOOT, 0);
+            event.getPlayer().playEffect(event.getPlayer().getLocation(), Effect.BLAZE_SHOOT, 20);
         }
     }
 
