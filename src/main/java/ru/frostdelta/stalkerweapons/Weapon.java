@@ -8,10 +8,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import ru.frostdelta.stalkerweapons.events.FireEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Weapon {
 
@@ -29,15 +29,18 @@ public class Weapon {
     private double aim;
     private List<String> lore = new ArrayList<String>();
 
+
+    //TODO идентификация патрон по лору, если оружие поднято с земли и всё такое, предположим он уже есть у оружия, изначально оно не заряжено
+
     public Weapon(String name, Player player){
         this.name = name;
+        this.player = player;
         FileConfiguration cfg = StalkerWeapons.inst().getConfig();
         ConfigurationSection section = cfg.getConfigurationSection("weapons." + name);
         damage = section.getDouble("damage");
         ammo = section.getInt("ammo");
         effect = Effect.getById(section.getInt("effect"));
         accuracy = section.getDouble("accuracy");
-        this.player = player;
         recoil = section.getInt("recoil");
         texture = section.getDouble("texture");
         run = section.getDouble("run");
@@ -55,28 +58,16 @@ public class Weapon {
         return itemStack.getDurability() == run;
     }
 
-    public void shot() {
+    public void shot(Player player) {
+        this.player = player;
         ammo--;
+        Arrow bullet = player.launchProjectile(Arrow.class);
+        bullet.setGravity(false);
+        bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+        bullet.setCustomName(name);
 
-        Fireball bullet = player.launchProjectile(Fireball.class);
-        bullet.setIsIncendiary(false);
-        bullet.setYield(0);
-        double d = new Random().nextDouble();
-        Vector vector = player.getEyeLocation().getDirection();
-        //TODO сделать рандом, каккую величину менять (X, Y или Z)
-        int num = new Random().nextInt(2);
-        switch (num){
-            case 0: vector.setX(vector.getX() * accuracy);
-                    break;
-            case 1: vector.setX(vector.getY() * accuracy);
-                    break;
-            case 2: vector.setX(vector.getZ() * accuracy);
-        }
-
-        if(d < accuracy) {
-            bullet.setVelocity(player.getEyeLocation().getDirection());
-        }else bullet.setVelocity(vector);
-        Bukkit.broadcastMessage("launch");
+        FireEvent event = new FireEvent(this);
+        Bukkit.getServer().getPluginManager().callEvent(event);
         //TODO поменять лор
     }
 

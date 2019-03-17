@@ -1,11 +1,18 @@
 package ru.frostdelta.stalkerweapons;
 
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.frostdelta.stalkerweapons.events.FireEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class StalkerWeapons extends JavaPlugin {
 
     private static StalkerWeapons plugin;
+
+    private static Map<Double, String> weaponMap = new HashMap<Double, String>();
 
     @Override
     public void onEnable() {
@@ -14,8 +21,22 @@ public final class StalkerWeapons extends JavaPlugin {
        plugin = this;
        getServer().getPluginManager().registerEvents(new FireEventListener(), this);
        //TODO подгрузка оружия
+        FileConfiguration cfg = this.getConfig();
+
+        for(String weapon : cfg.getConfigurationSection("weapons").getKeys(false)){
+            ConfigurationSection section = cfg.getConfigurationSection("weapons." + weapon);
+            StalkerWeapons.getWeapons().put(section.getDouble("texture"), section.getName().replaceAll("'", ""));
+            StalkerWeapons.getWeapons().put(section.getDouble("aim"), section.getName().replaceAll("'", ""));
+        }
     }
 
+    public static Map<Double, String> getWeapons() {
+        return weaponMap;
+    }
+
+    public static String getWeapon(Double d) {
+        return weaponMap.get(d);
+    }
 
     public static StalkerWeapons inst(){
         return plugin;
