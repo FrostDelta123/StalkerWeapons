@@ -32,30 +32,31 @@ public class Weapon {
 
     //TODO идентификация патрон по лору, если оружие поднято с земли и всё такое, предположим он уже есть у оружия, изначально оно не заряжено
 
-    public Weapon(String name, Player player){
+    public Weapon(String name, Player player, ItemStack item){
         this.name = name;
         this.player = player;
         FileConfiguration cfg = StalkerWeapons.inst().getConfig();
         ConfigurationSection section = cfg.getConfigurationSection("weapons." + name);
         damage = section.getDouble("damage");
-        ammo = section.getInt("ammo");
+        lore = item.getItemMeta().getLore();
+        String[] lor = lore.get(0).split(":");
+        ammo = Integer.parseInt(lor[0].trim());
         effect = Effect.getById(section.getInt("effect"));
         accuracy = section.getDouble("accuracy");
         recoil = section.getInt("recoil");
         texture = section.getDouble("texture");
         run = section.getDouble("run");
         aim = section.getDouble("aim");
-        itemStack = new ItemStack(Material.DIAMOND_HOE, 1, (short) texture);
-        lore.add("Боезапас: " + ammo);
-        itemStack.getItemMeta().setLore(lore);
+        itemStack = item;
+
     }
 
     public boolean isAiming(){
-        return itemStack.getDurability() == aim;
+        return itemStack.getDurability()/1562 == aim;
     }
 
     public boolean isRunning(){
-        return itemStack.getDurability() == run;
+        return itemStack.getDurability()/1562 == run;
     }
 
     public void shot(Player player) {
