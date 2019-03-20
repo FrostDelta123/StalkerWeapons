@@ -2,6 +2,7 @@ package ru.frostdelta.stalkerweapons.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,7 +47,7 @@ public class FireEventListener implements Listener {
         if(item.hasItemMeta() && !item.getItemMeta().hasLore()){
             return;
         }
-        if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if(event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 
             double damage = ((double) item.getDurability());
             double d = damage / 1562;
@@ -57,14 +58,13 @@ public class FireEventListener implements Listener {
 
             if(StalkerWeapons.isWeapon(d)){
                 Bukkit.broadcastMessage("Shot");
-
-                //TODO логика выстрела
+                new Weapon(player, item).shot();
+                event.getPlayer().playEffect(event.getPlayer().getLocation(), Effect.BLAZE_SHOOT, 20);
+                event.setCancelled(true);
             }
             //Bukkit.broadcastMessage(ChatColor.YELLOW + String.valueOf(damage));
             //Bukkit.broadcastMessage(ChatColor.GOLD + String.valueOf(d));
             //shot(event.getPlayer());
-            //event.getPlayer().playEffect(event.getPlayer().getLocation(), Effect.BLAZE_SHOOT, 20);
-            new Weapon(player, item).shot();
         }
     }
 

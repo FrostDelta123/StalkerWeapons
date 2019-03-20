@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
@@ -25,6 +26,7 @@ public class Weapon {
     private double accuracy;
     private Player player;
     private int recoil;
+    private int maxAmmo;
     private double run;
     private double texture;
     private double aim;
@@ -42,6 +44,7 @@ public class Weapon {
         lore = item.getItemMeta().getLore();
         String[] lor = lore.get(0).split(":");
         ammo = Integer.parseInt(lor[1].trim());
+        maxAmmo = section.getInt("max-ammo");
         effect = Effect.getById(section.getInt("effect"));
         accuracy = section.getDouble("accuracy");
         recoil = section.getInt("recoil");
@@ -60,17 +63,29 @@ public class Weapon {
     }
 
     public void shot() {
+        if(ammo <= 0){
+            Inventory inv = player.getInventory();
+            if(inv.contains(Material.ARROW)){
+            player.sendMessage("No ammo! Reloading...");
+            //TODO перезарядка
+            }else {
+                player.sendMessage("No ammo!!!");
+                return;
+            }
+        }
         ammo--;
         Arrow bullet = player.launchProjectile(Arrow.class);
         bullet.setGravity(false);
-        bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+        bullet.setPickupStatus(Arrow.PickupStatus.CREATIVE_ONLY);
         bullet.setCustomName(name);
 
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.getLore().clear();
-        itemMeta.getLore().add("Боезапас: " + 222);
+        List<String> list = new ArrayList<String>();
+        list.add("Боезапас: " + ammo);
+        itemMeta.setLore(list);
         player.getItemInHand().setItemMeta(itemMeta);
-        //TODO отдача и изменение боезапаса(подсмотреть в Join ивенте )
+        player.getEyeLocation().add(0, recoil,0);
+        //TODO отдача, не работает как надо
         //FireEvent event = new FireEvent(this);
         //Bukkit.getServer().getPluginManager().callEvent(event);
     }
