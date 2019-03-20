@@ -7,6 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 import ru.frostdelta.stalkerweapons.events.FireEvent;
 
@@ -32,15 +33,15 @@ public class Weapon {
 
     //TODO идентификация патрон по лору, если оружие поднято с земли и всё такое, предположим он уже есть у оружия, изначально оно не заряжено
 
-    public Weapon(String name, Player player, ItemStack item){
-        this.name = name;
+    public Weapon(Player player, ItemStack item){
+        this.name = item.getItemMeta().getDisplayName();
         this.player = player;
         FileConfiguration cfg = StalkerWeapons.inst().getConfig();
         ConfigurationSection section = cfg.getConfigurationSection("weapons." + name);
         damage = section.getDouble("damage");
         lore = item.getItemMeta().getLore();
         String[] lor = lore.get(0).split(":");
-        ammo = Integer.parseInt(lor[0].trim());
+        ammo = Integer.parseInt(lor[1].trim());
         effect = Effect.getById(section.getInt("effect"));
         accuracy = section.getDouble("accuracy");
         recoil = section.getInt("recoil");
@@ -48,7 +49,6 @@ public class Weapon {
         run = section.getDouble("run");
         aim = section.getDouble("aim");
         itemStack = item;
-
     }
 
     public boolean isAiming(){
@@ -59,17 +59,20 @@ public class Weapon {
         return itemStack.getDurability()/1562 == run;
     }
 
-    public void shot(Player player) {
-        this.player = player;
+    public void shot() {
         ammo--;
         Arrow bullet = player.launchProjectile(Arrow.class);
         bullet.setGravity(false);
         bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
         bullet.setCustomName(name);
 
-        FireEvent event = new FireEvent(this);
-        Bukkit.getServer().getPluginManager().callEvent(event);
-        //TODO поменять лор
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.getLore().clear();
+        itemMeta.getLore().add("Боезапас: " + 222);
+        player.getItemInHand().setItemMeta(itemMeta);
+        //TODO отдача и изменение боезапаса(подсмотреть в Join ивенте )
+        //FireEvent event = new FireEvent(this);
+        //Bukkit.getServer().getPluginManager().callEvent(event);
     }
 
     public int getRecoil() {

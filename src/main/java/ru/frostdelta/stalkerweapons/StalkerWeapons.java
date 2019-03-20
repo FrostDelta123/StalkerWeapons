@@ -30,6 +30,9 @@ public final class StalkerWeapons extends JavaPlugin {
         }
     }
 
+    public static boolean isWeapon(double d){
+        return weaponMap.containsKey(d);
+    }
     public static Map<Double, String> getWeapons() {
         return weaponMap;
     }
