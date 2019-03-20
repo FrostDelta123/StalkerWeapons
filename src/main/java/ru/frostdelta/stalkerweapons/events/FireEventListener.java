@@ -47,7 +47,7 @@ public class FireEventListener implements Listener {
         if(item.hasItemMeta() && !item.getItemMeta().hasLore()){
             return;
         }
-        if(event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+        if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
 
             double damage = ((double) item.getDurability());
             double d = damage / 1562;
@@ -57,7 +57,6 @@ public class FireEventListener implements Listener {
            //}
 
             if(StalkerWeapons.isWeapon(d)){
-                Bukkit.broadcastMessage("Shot");
                 new Weapon(player, item).shot();
                 event.getPlayer().playEffect(event.getPlayer().getLocation(), Effect.BLAZE_SHOOT, 20);
                 event.setCancelled(true);

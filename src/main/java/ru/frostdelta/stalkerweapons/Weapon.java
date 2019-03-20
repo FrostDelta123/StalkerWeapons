@@ -2,6 +2,7 @@ package ru.frostdelta.stalkerweapons;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -31,7 +32,8 @@ public class Weapon {
     private double texture;
     private double aim;
     private List<String> lore = new ArrayList<String>();
-
+    private boolean reload;
+    private int reloadingTime;
 
     //TODO идентификация патрон по лору, если оружие поднято с земли и всё такое, предположим он уже есть у оружия, изначально оно не заряжено
 
@@ -51,6 +53,7 @@ public class Weapon {
         texture = section.getDouble("texture");
         run = section.getDouble("run");
         aim = section.getDouble("aim");
+        reloadingTime = section.getInt("reload");
         itemStack = item;
     }
 
@@ -63,11 +66,41 @@ public class Weapon {
     }
 
     public void shot() {
+
+
+        //TODO релоад не пашет, что за хуйня?
+        if(isReload()){
+            player.sendMessage("Иди нахуй! у тебя релоад");
+            return;
+        }
+
         if(ammo <= 0){
+            int amount = 0;
+            ItemStack itemStack;
             Inventory inv = player.getInventory();
             if(inv.contains(Material.ARROW)){
+            setReloading(true);
+            //new Scheduler(this).runTaskLater(StalkerWeapons.inst(), 10 * 20);
             player.sendMessage("No ammo! Reloading...");
-            //TODO перезарядка
+            for(ItemStack bullet : inv.getContents()){
+                if(bullet != null) {
+                    if (bullet.getType().equals(Material.ARROW)) {
+                        amount += bullet.getAmount();
+                        if (amount > maxAmmo) {
+                            itemStack = new ItemStack(Material.ARROW, maxAmmo);
+                            inv.removeItem(itemStack);
+                            reload(maxAmmo);
+                            return;
+                        } else {
+                            itemStack = new ItemStack(Material.ARROW, amount);
+                            inv.removeItem(itemStack);
+                            reload(amount);
+                            return;
+                        }
+                    }
+                }
+            }
+
             }else {
                 player.sendMessage("No ammo!!!");
                 return;
@@ -84,10 +117,28 @@ public class Weapon {
         list.add("Боезапас: " + ammo);
         itemMeta.setLore(list);
         player.getItemInHand().setItemMeta(itemMeta);
-        player.getEyeLocation().add(0, recoil,0);
+        Location loc = player.getLocation();
+        loc.setPitch(player.getLocation().getPitch() + recoil);
+        player.teleport(loc);
         //TODO отдача, не работает как надо
         //FireEvent event = new FireEvent(this);
         //Bukkit.getServer().getPluginManager().callEvent(event);
+    }
+
+    private void reload(int bullets){
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        List<String> list = new ArrayList<String>();
+        list.add("Боезапас: " + bullets);
+        itemMeta.setLore(list);
+        player.getItemInHand().setItemMeta(itemMeta);
+    }
+
+    public void setReloading(boolean reload){
+        this.reload = reload;
+    }
+
+    private boolean isReload(){
+        return reload;
     }
 
     public int getRecoil() {
