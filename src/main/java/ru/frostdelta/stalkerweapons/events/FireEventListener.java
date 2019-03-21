@@ -1,7 +1,5 @@
 package ru.frostdelta.stalkerweapons.events;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,9 +14,7 @@ import ru.frostdelta.stalkerweapons.StalkerWeapons;
 import ru.frostdelta.stalkerweapons.Weapon;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class FireEventListener implements Listener {
 
@@ -48,10 +44,8 @@ public class FireEventListener implements Listener {
             return;
         }
         if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
-
             double damage = ((double) item.getDurability());
             double d = damage / 1562;
-
             if(StalkerWeapons.isWeapon(d)){
                 new Weapon(player, item).shot();
                 event.getPlayer().playEffect(event.getPlayer().getLocation(), Effect.BLAZE_SHOOT, 20);

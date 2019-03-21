@@ -33,7 +33,6 @@ public class Weapon {
     private double texture;
     private double aim;
     private List<String> lore = new ArrayList<String>();
-    private boolean reload;
     private int reloadingTime;
 
     //TODO идентификация патрон по лору, если оружие поднято с земли и всё такое, предположим он уже есть у оружия, изначально оно не заряжено
@@ -79,7 +78,7 @@ public class Weapon {
             Inventory inv = player.getInventory();
             if(inv.contains(Material.ARROW)){
             setReloading(player, true);
-            new Scheduler(player).runTaskLater(StalkerWeapons.inst(), 10 * 20);
+            new Scheduler(player).runTaskLater(StalkerWeapons.inst(), reloadingTime * 20);
             player.sendMessage("No ammo! Reloading...");
             for(ItemStack bullet : inv.getContents()){
                 if(bullet != null) {
@@ -135,6 +134,18 @@ public class Weapon {
         if(b){
             getReloadingPlayers().add(reload);
         }else getReloadingPlayers().remove(reload);
+    }
+
+    public double getTexture() {
+        return texture;
+    }
+
+    public double getAimTexture() {
+        return aim;
+    }
+
+    public double getRunTexture() {
+        return run;
     }
 
     private boolean isReload(Player player){
