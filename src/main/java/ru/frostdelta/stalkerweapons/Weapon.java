@@ -68,7 +68,6 @@ public class Weapon {
 
     public void shot() {
 
-        //TODO релоад не пашет, что за хуйня?
         if(isReload(player)){
             player.sendMessage("Иди нахуй! у тебя релоад");
             return;
@@ -120,9 +119,8 @@ public class Weapon {
         Location loc = player.getLocation();
         loc.setPitch(player.getLocation().getPitch() + recoil);
         player.teleport(loc);
-        //TODO отдача, не работает как надо
-        //FireEvent event = new FireEvent(this);
-        //Bukkit.getServer().getPluginManager().callEvent(event);
+        //TODO отдача, в целом работает, но думаю можно и лучше
+
     }
 
     private void reload(int bullets){

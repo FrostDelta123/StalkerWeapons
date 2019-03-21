@@ -52,18 +52,12 @@ public class FireEventListener implements Listener {
             double damage = ((double) item.getDurability());
             double d = damage / 1562;
 
-            //for(Map.Entry<Double, String> entry : StalkerWeapons.getWeapons().entrySet()) {
-               //Bukkit.broadcastMessage(String.valueOf(entry.getKey()) + " value " + entry.getValue());
-           //}
-
             if(StalkerWeapons.isWeapon(d)){
                 new Weapon(player, item).shot();
                 event.getPlayer().playEffect(event.getPlayer().getLocation(), Effect.BLAZE_SHOOT, 20);
                 event.setCancelled(true);
             }
-            //Bukkit.broadcastMessage(ChatColor.YELLOW + String.valueOf(damage));
-            //Bukkit.broadcastMessage(ChatColor.GOLD + String.valueOf(d));
-            //shot(event.getPlayer());
+
         }
     }
 
