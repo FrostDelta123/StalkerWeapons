@@ -11,6 +11,7 @@ weapons:
     max-ammo: 10
     reload: 2
     speed: 1000
+    explosion: true
 
   'm4a1':
     ammo: 30
@@ -24,3 +25,4 @@ weapons:
     max-ammo: 30
     reload: 3
     speed: 1000
+    explosion: false

@@ -35,8 +35,7 @@ public class Weapon {
     private List<String> lore = new ArrayList<String>();
     private int reloadingTime;
     private long speed;
-
-    //TODO идентификация патрон по лору, если оружие поднято с земли и всё такое, предположим он уже есть у оружия, изначально оно не заряжено
+    private boolean explosion;
 
     public Weapon(Player player, ItemStack item){
         this.name = item.getItemMeta().getDisplayName();
@@ -56,6 +55,7 @@ public class Weapon {
         aim = section.getDouble("aim");
         reloadingTime = section.getInt("reload");
         speed = section.getLong("speed");
+        explosion = section.getBoolean("explosion");
         itemStack = item;
     }
 
@@ -76,7 +76,6 @@ public class Weapon {
             player.sendMessage("Иди нахуй! у тебя релоад");
             return;
         }
-
         if(ammo <= 0){
             int amount = 0;
             ItemStack itemStack;
@@ -103,7 +102,6 @@ public class Weapon {
                     }
                 }
             }
-
             }else {
                 player.sendMessage("No ammo!!!");
                 return;
@@ -125,6 +123,7 @@ public class Weapon {
         player.teleport(loc);
         new Cooldown(player, name, speed).start();
         //TODO отдача, в целом работает, но думаю можно и лучше
+        //TODO взрывы при попаданиях
 
     }
 
