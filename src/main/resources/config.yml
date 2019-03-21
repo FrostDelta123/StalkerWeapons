@@ -10,6 +10,7 @@ weapons:
     aim: 0.0076824583866837385
     max-ammo: 10
     reload: 2
+    speed: 1000
 
   'm4a1':
     ammo: 30
@@ -22,3 +23,4 @@ weapons:
     aim: 0.013444302176696543
     max-ammo: 30
     reload: 3
+    speed: 1000

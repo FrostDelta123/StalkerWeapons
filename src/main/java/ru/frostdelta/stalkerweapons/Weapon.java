@@ -34,6 +34,7 @@ public class Weapon {
     private double aim;
     private List<String> lore = new ArrayList<String>();
     private int reloadingTime;
+    private long speed;
 
     //TODO идентификация патрон по лору, если оружие поднято с земли и всё такое, предположим он уже есть у оружия, изначально оно не заряжено
 
@@ -54,6 +55,7 @@ public class Weapon {
         run = section.getDouble("run");
         aim = section.getDouble("aim");
         reloadingTime = section.getInt("reload");
+        speed = section.getLong("speed");
         itemStack = item;
     }
 
@@ -121,7 +123,7 @@ public class Weapon {
         Location loc = player.getLocation();
         loc.setPitch(player.getLocation().getPitch() + recoil);
         player.teleport(loc);
-        new Cooldown(player, name, 10).start();
+        new Cooldown(player, name, speed).start();
         //TODO отдача, в целом работает, но думаю можно и лучше
 
     }

@@ -3,18 +3,16 @@ package ru.frostdelta.stalkerweapons;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 public class Cooldown {
 
     public static Map<String, Cooldown> cooldowns = new HashMap<String, Cooldown>();
     private long start;
-    private final int timeInSeconds;
+    private final long timeInSeconds;
     private final Player id;
     private final String cooldownName;
 
-    public Cooldown(Player id, String cooldownName, int timeInSeconds){
+    public Cooldown(Player id, String cooldownName, long timeInSeconds){
         this.id = id;
         this.cooldownName = cooldownName;
         this.timeInSeconds = timeInSeconds;
@@ -22,7 +20,6 @@ public class Cooldown {
 
     public static boolean isInCooldown(Player id, String cooldownName){
         if(!cooldowns.containsKey(id.getName()+cooldownName)){
-            Bukkit.broadcastMessage("агада");
             return false;
         }
         if(getTimeLeft(id, cooldownName) >= 0){
@@ -47,7 +44,7 @@ public class Cooldown {
         if(cooldown!=null){
             long now = System.currentTimeMillis();
             long cooldownTime = cooldown.start;
-            long totalTime = cooldown.timeInSeconds * 1000;
+            long totalTime = cooldown.timeInSeconds;
             f = (totalTime + cooldownTime) - now;
         }
         return f;
