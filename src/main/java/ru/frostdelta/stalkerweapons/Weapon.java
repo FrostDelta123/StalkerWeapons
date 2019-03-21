@@ -18,6 +18,7 @@ import java.util.List;
 
 public class Weapon {
 
+    private static List<Player> reloadingPlayers = new ArrayList<Player>();
 
     private ItemStack itemStack;
     private String name;
@@ -67,9 +68,8 @@ public class Weapon {
 
     public void shot() {
 
-
         //TODO релоад не пашет, что за хуйня?
-        if(isReload()){
+        if(isReload(player)){
             player.sendMessage("Иди нахуй! у тебя релоад");
             return;
         }
@@ -79,8 +79,8 @@ public class Weapon {
             ItemStack itemStack;
             Inventory inv = player.getInventory();
             if(inv.contains(Material.ARROW)){
-            setReloading(true);
-            //new Scheduler(this).runTaskLater(StalkerWeapons.inst(), 10 * 20);
+            setReloading(player, true);
+            new Scheduler(player).runTaskLater(StalkerWeapons.inst(), 10 * 20);
             player.sendMessage("No ammo! Reloading...");
             for(ItemStack bullet : inv.getContents()){
                 if(bullet != null) {
@@ -133,12 +133,14 @@ public class Weapon {
         player.getItemInHand().setItemMeta(itemMeta);
     }
 
-    public void setReloading(boolean reload){
-        this.reload = reload;
+    public static void setReloading(Player reload, boolean b){
+        if(b){
+            getReloadingPlayers().add(reload);
+        }else getReloadingPlayers().remove(reload);
     }
 
-    private boolean isReload(){
-        return reload;
+    private boolean isReload(Player player){
+        return getReloadingPlayers().contains(player);
     }
 
     public int getRecoil() {
@@ -167,5 +169,9 @@ public class Weapon {
 
     public int getAmmo() {
         return ammo;
+    }
+
+    public static List<Player> getReloadingPlayers() {
+        return reloadingPlayers;
     }
 }

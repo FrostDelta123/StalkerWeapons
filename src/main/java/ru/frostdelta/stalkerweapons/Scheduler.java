@@ -1,18 +1,19 @@
 package ru.frostdelta.stalkerweapons;
 
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class Scheduler extends BukkitRunnable {
 
-    private Weapon weapon;
+    private Player player;
 
-    Scheduler(Weapon weapon){
-        this.weapon = weapon;
+    Scheduler(Player player){
+        this.player = player;
     }
 
     @Override
     public void run() {
-        weapon.setReloading(false);
+        Weapon.setReloading(player, false);
     }
 
 }

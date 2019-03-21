@@ -30,7 +30,7 @@ public class FireEventListener implements Listener {
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("Калаш");
         List<String> list = new ArrayList<String>();
-        list.add("Боезапас: 30");
+        list.add("Боезапас: 10");
         meta.setLore(list);
 
         item.setItemMeta(meta);
