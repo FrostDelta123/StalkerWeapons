@@ -12,6 +12,7 @@ weapons:
     reload: 2
     speed: 1000
     explosion: true
+    exp-power: 5.0
 
   'm4a1':
     ammo: 30
@@ -26,3 +27,4 @@ weapons:
     reload: 3
     speed: 1000
     explosion: false
+    exp-power: 5.0

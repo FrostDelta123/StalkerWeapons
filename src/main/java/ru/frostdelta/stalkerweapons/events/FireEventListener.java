@@ -1,5 +1,6 @@
 package ru.frostdelta.stalkerweapons.events;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,7 +25,7 @@ public class FireEventListener implements Listener {
         Player player = event.getPlayer();
         ItemStack item = player.getItemInHand();
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("Калаш");
+        meta.setDisplayName("G36C");
         List<String> list = new ArrayList<String>();
         list.add("Боезапас: 10");
         meta.setLore(list);
@@ -43,25 +44,24 @@ public class FireEventListener implements Listener {
         if(item.hasItemMeta() && !item.getItemMeta().hasLore()){
             return;
         }
-        if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
-            double damage = ((double) item.getDurability());
-            double d = damage / 1562;
-            if(StalkerWeapons.isWeapon(d)){
-                new Weapon(player, item).shot();
-                event.getPlayer().playEffect(event.getPlayer().getLocation(), Effect.BLAZE_SHOOT, 20);
-                event.setCancelled(true);
+        double damage = ((double) item.getDurability());
+        double d = damage / 1562;
+        if(StalkerWeapons.isWeapon(d)){
+            Weapon weapon = new Weapon(player, item);
+            Action action = event.getAction();
+            if(action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) {
+                weapon.shot();
+                player.playEffect(player.getEyeLocation(), Effect.MOBSPAWNER_FLAMES, 0);
             }
-
-        }
-    }
-
-    @EventHandler
-    public void fire(FireEvent event){
-        if(event.getWeapon().getAmmo() > 0) {
-            //event.getWeapon().shot();
-        }else {
-            event.getPlayer().sendMessage("No ammo!!!");
-            event.setCancelled(true);
+            if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)){
+                if(weapon.isAiming()){
+                    int durability = (int) (weapon.getTexture() * 1562);
+                    item.setDurability((short) durability);
+                }else {
+                    int durability = (int) (weapon.getAimTexture() * 1562);
+                    item.setDurability((short) durability);
+                }
+            }
         }
     }
 

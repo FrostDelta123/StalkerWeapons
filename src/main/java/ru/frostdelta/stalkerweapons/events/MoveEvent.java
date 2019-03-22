@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import ru.frostdelta.stalkerweapons.SprintScheduler;
 import ru.frostdelta.stalkerweapons.StalkerWeapons;
 
@@ -17,9 +18,15 @@ public class MoveEvent implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void sprint(PlayerMoveEvent event){
+        ItemStack item = event.getPlayer().getItemInHand();
+        double damage = ((double) item.getDurability());
+        double d = damage / 1562;
+        if(!StalkerWeapons.isWeapon(d)){
+            return;
+        }
         if (event.getPlayer().isSprinting() && !players.contains(event.getPlayer())){
             players.add(event.getPlayer());
-            new SprintScheduler(event.getPlayer()).runTaskTimer(StalkerWeapons.inst(), 0, 20);
+            new SprintScheduler(event.getPlayer()).runTaskTimerAsynchronously(StalkerWeapons.inst(), 0, 10);
         }
     }
 

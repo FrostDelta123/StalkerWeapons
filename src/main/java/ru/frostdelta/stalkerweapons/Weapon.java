@@ -1,6 +1,5 @@
 package ru.frostdelta.stalkerweapons;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,8 +9,6 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.Vector;
-import ru.frostdelta.stalkerweapons.events.FireEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,20 +57,15 @@ public class Weapon {
     }
 
     public boolean isAiming(){
-        return itemStack.getDurability()/1562 == aim;
-    }
-
-    public boolean isRunning(){
-        return itemStack.getDurability()/1562 == run;
+        return player.getItemInHand().getDurability() == aim * 1562;
     }
 
     public void shot() {
-
         if(Cooldown.isInCooldown(player, name)){
             return;
         }
         if(isReload(player)){
-            player.sendMessage("Иди нахуй! у тебя релоад");
+            player.sendMessage("У тебя релоад");
             return;
         }
         if(ammo <= 0){
@@ -123,7 +115,6 @@ public class Weapon {
         player.teleport(loc);
         new Cooldown(player, name, speed).start();
         //TODO отдача, в целом работает, но думаю можно и лучше
-        //TODO взрывы при попаданиях
 
     }
 

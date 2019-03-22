@@ -21,6 +21,9 @@ public class HitEvent implements Listener {
                 FileConfiguration cfg = StalkerWeapons.inst().getConfig();
                 ConfigurationSection section = cfg.getConfigurationSection("weapons." + bullet.getCustomName());
                 player.damage(section.getDouble("damage"));
+                if(section.getBoolean("explosion")){
+                    player.getWorld().createExplosion(player.getLocation(), (float) section.getDouble("exp-power"));
+                }
             }
         }
     }

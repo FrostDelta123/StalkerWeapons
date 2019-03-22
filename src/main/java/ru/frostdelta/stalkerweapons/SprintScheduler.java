@@ -18,12 +18,13 @@ public class SprintScheduler extends BukkitRunnable {
         ItemStack item = player.getItemInHand();
         double damage = ((double) item.getDurability());
         double d = damage / 1562;
-        if(StalkerWeapons.isWeapon(d)) {
+        if(StalkerWeapons.isWeapon(d) || StalkerWeapons.isRunning(d)) {
+            Weapon weapon = new Weapon(player, item);
             if (player.isSprinting()) {
-                int durability = (int) (new Weapon(player, item).getRunTexture() * 1562);
+                int durability = (int) (weapon.getRunTexture() * 1562);
                 item.setDurability((short) durability);
             } else {
-                int durability = (int) (new Weapon(player, item).getTexture() * 1562);
+                int durability = (int) (weapon.getTexture() * 1562);
                 item.setDurability((short) durability);
                 MoveEvent.players.remove(player);
                 this.cancel();
