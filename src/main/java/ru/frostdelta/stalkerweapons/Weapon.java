@@ -21,7 +21,6 @@ public class Weapon {
     private String name;
     private double damage;
     private int ammo;
-    private Effect effect;
     private double accuracy;
     private Player player;
     private int recoil;
@@ -44,7 +43,6 @@ public class Weapon {
         String[] lor = lore.get(0).split(":");
         ammo = Integer.parseInt(lor[1].trim());
         maxAmmo = section.getInt("max-ammo");
-        effect = Effect.getById(section.getInt("effect"));
         accuracy = section.getDouble("accuracy");
         recoil = section.getInt("recoil");
         texture = section.getDouble("texture");
@@ -193,10 +191,6 @@ public class Weapon {
 
     public double getDamage() {
         return damage;
-    }
-
-    public Effect getEffect() {
-        return effect;
     }
 
     public int getAmmo() {
