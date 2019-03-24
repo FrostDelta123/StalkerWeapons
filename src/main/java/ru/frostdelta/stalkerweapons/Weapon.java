@@ -60,6 +60,23 @@ public class Weapon {
         return player.getItemInHand().getDurability() == aim * 1562;
     }
 
+
+    public static ItemStack create(String name){
+        ItemStack item = new ItemStack(Material.DIAMOND_HOE, 1);
+        FileConfiguration cfg = StalkerWeapons.inst().getConfig();
+        ConfigurationSection section = cfg.getConfigurationSection("weapons." + name);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(section.getString("name"));
+        List<String> lore = new ArrayList<String>();
+        lore.add("Боезапас: " + section.getString("ammo"));
+        lore.add("Урон: " + section.getDouble("damage"));
+        lore.add("Сила отдачи: " + section.getInt("recoil"));
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        item.setDurability((short) (section.getDouble("texture") * 1562));
+        return item;
+    }
+
     public void shot() {
         if(Cooldown.isInCooldown(player, name)){
             return;
@@ -99,6 +116,8 @@ public class Weapon {
                 return;
             }
         }
+        FileConfiguration cfg = StalkerWeapons.inst().getConfig();
+        ConfigurationSection section = cfg.getConfigurationSection("weapons." + name);
         ammo--;
         Arrow bullet = player.launchProjectile(Arrow.class);
         bullet.setGravity(false);
@@ -108,6 +127,9 @@ public class Weapon {
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> list = new ArrayList<String>();
         list.add("Боезапас: " + ammo);
+        list.add("Урон: " + section.getDouble("damage"));
+        list.add("Сила отдачи: " + section.getInt("recoil"));
+
         itemMeta.setLore(list);
         player.getItemInHand().setItemMeta(itemMeta);
         Location loc = player.getLocation();

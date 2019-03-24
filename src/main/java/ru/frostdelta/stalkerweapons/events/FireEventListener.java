@@ -1,6 +1,5 @@
 package ru.frostdelta.stalkerweapons.events;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,27 +9,15 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import ru.frostdelta.stalkerweapons.StalkerWeapons;
 import ru.frostdelta.stalkerweapons.Weapon;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FireEventListener implements Listener {
 
 
     @EventHandler
     public void join(PlayerJoinEvent event){
-        Player player = event.getPlayer();
-        ItemStack item = player.getItemInHand();
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("G36C");
-        List<String> list = new ArrayList<String>();
-        list.add("Боезапас: 10");
-        meta.setLore(list);
-
-        item.setItemMeta(meta);
+       event.getPlayer().getInventory().addItem(Weapon.create("G36C"));
     }
 
     @EventHandler

@@ -3,3 +3,6 @@ version: ${project.version}
 main: ru.frostdelta.stalkerweapons.StalkerWeapons
 authors: [FrostDelta123]
 description: Stalker Weapons plugin
+commands:
+  weapongive:
+    permission: stalkerweapons.weapongive

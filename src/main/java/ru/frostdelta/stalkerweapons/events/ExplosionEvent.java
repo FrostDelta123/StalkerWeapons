@@ -20,6 +20,7 @@ public class ExplosionEvent implements Listener {
                 if(section.getBoolean("explosion")){
                     event.getHitBlock().getWorld().createExplosion(event.getHitBlock().getLocation(), (float) section.getDouble("exp-power"));
                 }
+                event.getEntity().remove();
             }
         }
     }

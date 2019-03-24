@@ -24,6 +24,7 @@ public class HitEvent implements Listener {
                 if(section.getBoolean("explosion")){
                     player.getWorld().createExplosion(player.getLocation(), (float) section.getDouble("exp-power"));
                 }
+                event.getEntity().remove();
             }
         }
     }
