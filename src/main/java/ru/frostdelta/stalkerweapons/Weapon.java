@@ -136,14 +136,19 @@ public class Weapon {
         loc.setPitch(player.getLocation().getPitch() + recoil);
         player.teleport(loc);
         new Cooldown(player, name, speed).start();
-        //TODO отдача, в целом работает, но думаю можно и лучше
 
     }
 
     private void reload(int bullets){
+        FileConfiguration cfg = StalkerWeapons.inst().getConfig();
+        ConfigurationSection section = cfg.getConfigurationSection("weapons." + name);
+
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> list = new ArrayList<String>();
         list.add("Боезапас: " + bullets);
+        list.add("Урон: " + section.getDouble("damage"));
+        list.add("Сила отдачи: " + section.getInt("recoil"));
+
         itemMeta.setLore(list);
         player.getItemInHand().setItemMeta(itemMeta);
     }

@@ -17,6 +17,7 @@ public final class StalkerWeapons extends JavaPlugin {
 
     private static Map<Double, String> weaponMap = new HashMap<Double, String>();
     private static Map<Double, String> runGuns = new HashMap<Double, String>();
+
     @Override
     public void onEnable() {
 
@@ -45,7 +46,7 @@ public final class StalkerWeapons extends JavaPlugin {
     public static boolean isWeapon(double d){
         return weaponMap.containsKey(d);
     }
-    public static Map<Double, String> getWeapons() {
+    private static Map<Double, String> getWeapons() {
         return weaponMap;
     }
 
@@ -60,5 +61,6 @@ public final class StalkerWeapons extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        getLogger().info("Developed by: " + getDescription().getAuthors());
     }
 }
