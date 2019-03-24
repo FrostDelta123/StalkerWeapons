@@ -30,7 +30,6 @@ public final class StalkerWeapons extends JavaPlugin {
        FileConfiguration cfg = this.getConfig();
        getCommand("weapongive").setExecutor(new WeaponGiveCommand());
 
-       //TODO команда выдачи оружий /givegun ник название аргумент all выдаёт всё
         for(String weapon : cfg.getConfigurationSection("weapons").getKeys(false)){
             ConfigurationSection section = cfg.getConfigurationSection("weapons." + weapon);
             StalkerWeapons.getWeapons().put(section.getDouble("texture"), section.getName().replaceAll("'", ""));
