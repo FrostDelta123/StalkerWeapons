@@ -4,6 +4,7 @@ import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -20,7 +21,7 @@ public class FireEventListener implements Listener {
        event.getPlayer().getInventory().addItem(Weapon.create("G36C"));
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void interact(PlayerInteractEvent event){
         Player player = event.getPlayer();
         ItemStack item = player.getItemInHand();
@@ -38,7 +39,6 @@ public class FireEventListener implements Listener {
             Action action = event.getAction();
             if(action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) {
                 weapon.shot();
-                player.playEffect(player.getEyeLocation(), Effect.MOBSPAWNER_FLAMES, 0);
             }
             if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)){
                 if(weapon.isAiming()){

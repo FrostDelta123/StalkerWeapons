@@ -1,5 +1,6 @@
 package ru.frostdelta.stalkerweapons;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -67,8 +68,9 @@ public class Weapon {
         meta.setDisplayName(section.getString("name"));
         List<String> lore = new ArrayList<String>();
         lore.add("Боезапас: " + section.getString("ammo"));
-        lore.add("Урон: " + section.getDouble("damage"));
-        lore.add("Сила отдачи: " + section.getInt("recoil"));
+        for(String str : section.getStringList("lore")){
+            lore.add(str.replace("&", "§").trim());
+        }
         meta.setLore(lore);
         item.setItemMeta(meta);
         item.setDurability((short) (section.getDouble("texture") * 1562));
@@ -80,7 +82,7 @@ public class Weapon {
             return;
         }
         if(isReload(player)){
-            player.sendMessage("У тебя релоад");
+            player.sendMessage(ChatColor.RED + "У тебя перезарядка, подожди!");
             return;
         }
         if(ammo <= 0){
@@ -90,7 +92,7 @@ public class Weapon {
             if(inv.contains(Material.ARROW)){
             setReloading(player, true);
             new Scheduler(player).runTaskLater(StalkerWeapons.inst(), reloadingTime * 20);
-            player.sendMessage("No ammo! Reloading...");
+            player.sendMessage(ChatColor.RED + "Нет патрон! Перезарядка...");
             for(ItemStack bullet : inv.getContents()){
                 if(bullet != null) {
                     if (bullet.getType().equals(Material.ARROW)) {
@@ -110,13 +112,14 @@ public class Weapon {
                 }
             }
             }else {
-                player.sendMessage("No ammo!!!");
+                player.sendMessage(ChatColor.RED + "Нет патрон!!!");
                 return;
             }
         }
         FileConfiguration cfg = StalkerWeapons.inst().getConfig();
         ConfigurationSection section = cfg.getConfigurationSection("weapons." + name);
         ammo--;
+        player.playEffect(player.getEyeLocation(), Effect.MOBSPAWNER_FLAMES, 0);
         Arrow bullet = player.launchProjectile(Arrow.class);
         bullet.setGravity(false);
         bullet.setPickupStatus(Arrow.PickupStatus.CREATIVE_ONLY);
@@ -125,9 +128,10 @@ public class Weapon {
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> list = new ArrayList<String>();
         list.add("Боезапас: " + ammo);
-        list.add("Урон: " + section.getDouble("damage"));
-        list.add("Сила отдачи: " + section.getInt("recoil"));
 
+        for(String str : section.getStringList("lore")){
+            list.add(str.replace("&", "§").trim());
+        }
         itemMeta.setLore(list);
         player.getItemInHand().setItemMeta(itemMeta);
         Location loc = player.getLocation();
@@ -144,8 +148,9 @@ public class Weapon {
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> list = new ArrayList<String>();
         list.add("Боезапас: " + bullets);
-        list.add("Урон: " + section.getDouble("damage"));
-        list.add("Сила отдачи: " + section.getInt("recoil"));
+        for(String str : section.getStringList("lore")){
+            list.add(str.replace("&", "§").trim());
+        }
 
         itemMeta.setLore(list);
         player.getItemInHand().setItemMeta(itemMeta);
