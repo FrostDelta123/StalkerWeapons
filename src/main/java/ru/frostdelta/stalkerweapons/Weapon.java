@@ -8,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -65,6 +66,7 @@ public class Weapon {
         FileConfiguration cfg = StalkerWeapons.inst().getConfig();
         ConfigurationSection section = cfg.getConfigurationSection("weapons." + name);
         ItemMeta meta = item.getItemMeta();
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         meta.setDisplayName(section.getString("name"));
         List<String> lore = new ArrayList<String>();
         lore.add("Боезапас: " + section.getString("ammo"));

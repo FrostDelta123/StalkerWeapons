@@ -16,10 +16,10 @@ import ru.frostdelta.stalkerweapons.Weapon;
 public class FireEventListener implements Listener {
 
 
-    @EventHandler
-    public void join(PlayerJoinEvent event){
-       event.getPlayer().getInventory().addItem(Weapon.create("G36C"));
-    }
+    //@EventHandler
+    //public void join(PlayerJoinEvent event){
+    //   event.getPlayer().getInventory().addItem(Weapon.create("G36C"));
+    //}
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void interact(PlayerInteractEvent event){
