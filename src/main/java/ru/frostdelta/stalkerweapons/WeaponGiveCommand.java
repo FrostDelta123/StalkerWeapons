@@ -33,7 +33,7 @@ public class WeaponGiveCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.GOLD + "Всё оружие выдано игроку: " + ChatColor.RED + player.getName());
         }else {
             player.getInventory().addItem(Weapon.create(args[1]));
-            sender.sendMessage(ChatColor.GOLD + "Оружие " + ChatColor.RED + args[1] + " выдано игроку: " + ChatColor.RED + player.getName());
+            sender.sendMessage(ChatColor.GOLD + "Оружие " + ChatColor.RED + args[1] + ChatColor.RESET + " выдано игроку: " + ChatColor.RED + player.getName());
         }
         return true;
     }
